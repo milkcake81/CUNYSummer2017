@@ -5,9 +5,15 @@ Select dest from flights order by distance DESC Limit 1;
 
 #2. What are the different numbers of engines in the planes table? For each number of engines, which aircraft have
 #the most number of seats? Show the SQL statement(s) that support your result.
-Select engines, max(seats) 
-from planes
-group by engines;
+Select tailnum, seats, planes.engines
+from planes, 	
+			(Select Max(seats) as Max_Seat, engines
+			from planes
+            group by engines) maxresults
+where seats = maxresults.Max_Seat
+AND planes.engines = maxresults.engines
+Order by engines;
+
 
 #3. Show the total number of flights
 Select Count(*)
